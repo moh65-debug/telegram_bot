@@ -3,7 +3,6 @@ import subprocess
 import json
 import sys
 import urllib.request
-import tarfile
 
 # --- 🔑 YOUR SETTINGS ---
 OPENROUTER_KEY = os.environ.get("OPENROUTER_KEY")
@@ -13,18 +12,15 @@ MY_USER_ID = os.environ.get("MY_USER_ID")
 
 def run_setup():
     # 1. Download Binary
-    if not os.path.exists("openfang"):
-        print("📥 Downloading OpenFang...")
-        binary_url = "https://github.com/RightNow-AI/openfang/releases/download/v0.2.3/openfang-x86_64-unknown-linux-gnu.tar.gz"
-        urllib.request.urlretrieve(binary_url, "openfang.tar.gz")
-        with tarfile.open("openfang.tar.gz", "r:gz") as tar:
-            tar.extractall(".")
-        os.remove("openfang.tar.gz")
-        os.chmod("openfang", 0o755)
+    if not os.path.exists("picoclaw"):
+        print("📥 Downloading PicoClaw...")
+        binary_url = "https://github.com/sipeed/picoclaw/releases/download/v0.1.1/picoclaw-linux-amd64"
+        urllib.request.urlretrieve(binary_url, "picoclaw")
+        os.chmod("picoclaw", 0o755)
         print("✅ Binary downloaded.")
 
     # 2. Create Config Directory & File
-    config_dir = os.path.expanduser("~/.openfang")
+    config_dir = os.path.expanduser("~/.picoclaw")
     os.makedirs(config_dir, exist_ok=True)
     
     config_data = {
@@ -55,9 +51,9 @@ def run_setup():
     print("✅ Config saved.")
 
     # 3. Launch the Gateway and STAY ALIVE
-    print("🚀 Starting OpenFang Gateway...")
+    print("🚀 Starting PicoClaw Gateway...")
     try:
-        subprocess.run(["./openfang", "gateway"], check=True)
+        subprocess.run(["./picoclaw", "gateway"], check=True)
     except KeyboardInterrupt:
         print("\nStopping bot...")
     except Exception as e:
