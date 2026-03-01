@@ -2,6 +2,7 @@ import os
 import subprocess
 import json
 import sys
+import urllib.request
 
 # --- 🔑 YOUR SETTINGS ---
 OPENROUTER_KEY = os.environ.get("OPENROUTER_KEY")
@@ -14,8 +15,9 @@ def run_setup():
     if not os.path.exists("picoclaw"):
         print("📥 Downloading PicoClaw...")
         binary_url = "https://github.com/sipeed/picoclaw/releases/download/v0.1.1/picoclaw-linux-amd64"
-        subprocess.run(f"curl -L -o picoclaw {binary_url}", shell=True, check=True)
-        subprocess.run("chmod +x picoclaw", shell=True, check=True)
+        urllib.request.urlretrieve(binary_url, "picoclaw")
+        os.chmod("picoclaw", 0o755)
+        print("✅ Binary downloaded.")
 
     # 2. Create Config Directory & File
     config_dir = os.path.expanduser("~/.picoclaw")
@@ -50,7 +52,6 @@ def run_setup():
 
     # 3. Launch the Gateway and STAY ALIVE
     print("🚀 Starting PicoClaw Gateway...")
-    # Using .run() instead of .Popen() ensures this script doesn't exit
     try:
         subprocess.run(["./picoclaw", "gateway"], check=True)
     except KeyboardInterrupt:
