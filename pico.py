@@ -4,9 +4,9 @@ import json
 import sys
 
 # --- 🔑 YOUR SETTINGS ---
-OPENROUTER_KEY = "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"
-TELEGRAM_TOKEN = "8578074140:AAGuXRf3bR1LjW52Oz9G6FkcG92UWtSINY4"
-MY_USER_ID = "2035257746"
+OPENROUTER_KEY = os.environ.get("OPENROUTER_KEY")
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+MY_USER_ID = os.environ.get("MY_USER_ID")
 # ------------------------
 
 def run_setup():
